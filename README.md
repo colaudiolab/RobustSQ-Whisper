@@ -1,18 +1,5 @@
 # RobustSQ-Whisper
 
-> 
-
-------
-
-## Features
-
-- Robust to **overlapped and noisy enrollment**
-- **Plug-in** modules: easy to reuse with existing SQ-Whisper/TS-ASR pipelines
-- **Reproducible** and **low-cost**: training-time only; inference unchanged
-- Works with **Libri2Mix** (clean/noisy; Train-100/Train-360/Dev/Test)
-
-# RobustSQ-Whisper: Margin-based Contrastive Learning with Attentive Statistics Pooling for Target-Speaker ASR under Noisy/Overlapped Enrollment
-
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.5+-red.svg)](https://pytorch.org/)
@@ -47,45 +34,48 @@ Our framework includes the following components for robust TS-ASR:
 
 ## 📁 Repository Structure
 
-> This recipe follows ESPnet’s `egs2/librimix` style. The tree below mirrors the main folders and scripts for TS-Whisper.
->tgt_asr1/
-├── run_tswhisper.sh # Main TS-Whisper pipeline (train/decode)
-├── asr_my.sh # Custom ASR baseline/ablation script
-├── check_training_status.sh # Monitor training/decoding status
-├── cmd.sh # Command launcher settings (local/queue)
-├── db.sh # Dataset paths (LibriSpeech/WHAM/Libri2Mix)
-├── path.sh # Environment setup
-├── gradscaler_fix.py # AMP/GradScaler patch (if needed)
+ This recipe follows ESPnet’s `egs2/librimix` style. The tree below mirrors the main folders and scripts for TS-Whisper.
+
+```
+tgt_asr1/
+├── run_tswhisper.sh                    # Main TS-Whisper pipeline (train/decode)
+├── asr_my.sh                           # Custom ASR baseline/ablation script
+├── check_training_status.sh            # Monitor training/decoding status
+├── cmd.sh                              # Command launcher settings (local/queue)
+├── db.sh                               # Dataset paths (LibriSpeech/WHAM/Libri2Mix)
+├── path.sh                             # Environment setup
+├── gradscaler_fix.py                   # AMP/GradScaler patch (if needed)
 ├── conf/
-│ ├── fbank.conf # Feature configs
-│ ├── pitch.conf
-│ ├── queue.conf / pbs.conf / slurm.conf
-│ └── tswhisper/
-│ ├── train_tsasr_whisper_medium_full_con20_q16_l2_crop10_lr5e-5.yaml
-│ ├── decode_asr_whisper_beam1.yaml
-│ ├── train_tsasr_whisper_medium_lora_qkvo_r16_.yaml
-│ └── train_tsasr_whisper_medium_masking_.yaml
+│   ├── fbank.conf                      # Feature configs
+│   ├── pitch.conf
+│   ├── queue.conf / pbs.conf / slurm.conf
+│   └── tswhisper/
+│       ├── train_tsasr_whisper_medium_full_con20_q16_l2_crop10_lr5e-5.yaml    #Train config
+│       ├── decode_asr_whisper_beam1.yaml
+│       ├── train_tsasr_whisper_medium_lora_qkvo_r16_.yaml
+│       └── train_tsasr_whisper_medium_masking_.yaml
 ├── datapre/
-│ ├── data_prep.sh # Bootstrap manifests/folders
-│ ├── data.sh
-│ ├── format_sglspk_dataset.py # Build single-speaker lists
-│ ├── create_enrollment_.py # Enrollment list creation
-│ ├── create_overlap_.py # Overlap mixing (SIR)
-│ └── add_wham_noise.py # Add WHAM! noise (SNR)
+│   ├── data_prep.sh                    # Bootstrap manifests/folders
+│   ├── data.sh
+│   ├── format_sglspk_dataset.py        # Build single-speaker lists
+│   ├── create_enrollment_.py           # Enrollment list creation
+│   ├── create_overlap_.py              # Overlap mixing (SIR)
+│   └── add_wham_noise.py               # Add WHAM! noise (SNR)
 ├── dump/
-│ ├── raw/{train/dev/test}_sglspk/ # Raw manifests
-│ └── {train/dev/test}_sglspk/ # Standardized Kaldi/ESPnet files:
-│ ├── wav.scp text utt2spk spk2utt
-│ ├── enroll.scp resnet.scp (optional)
-│ └── feats_type utt2num_samples
-├── embedding/ # Offline speaker embeddings
+│   ├── raw/{train,dev,test}_sglspk/    # Raw manifests
+│   └── {train,dev,test}_sglspk/        # Standardized Kaldi/ESPnet files:
+│       ├── wav.scp  text  utt2spk  spk2utt
+│       ├── enroll.scp  resnet.scp (optional)
+│       └── feats_type  utt2num_samples
+├── embedding/                          # Offline speaker embeddings
 ├── pretrain_model/
-│ ├── voxceleb_resnet34_LM.onnx # Speaker embedding model (optional)
-│ └── whisper/ # Whisper weights
-├── exp/ # Experiments, logs, checkpoints
-├── parallel/ # pbs.pl / slurm.pl / run.pl / retry.pl
-├── steps/ # Kaldi-style helper steps
-└── utils/ # Data utilities (combine/filter/split/etc.)
+│   ├── voxceleb_resnet34_LM.onnx       # Speaker embedding model (optional)
+│   └── whisper/                        # Whisper weights
+├── exp/                                # Experiments, logs, checkpoints
+├── parallel/                           # pbs.pl / slurm.pl / run.pl / retry.pl
+├── steps/                              # Kaldi-style helper steps
+└── utils/                              # Data utilities (combine/filter/split/etc.)
+```
 
 ## 📚 Datasets
 
