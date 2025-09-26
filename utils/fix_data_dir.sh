@@ -1,0 +1,1 @@
+exec utils/data/fix_data_dir.sh "$@"
