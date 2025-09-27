@@ -4,7 +4,7 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.5+-red.svg)](https://pytorch.org/)
 
-This is the official repository for the paper **"RobustSQ-Whisper: Margin-based Contrastive Learning and Attentive Statistics Pooling for Robust Target-Speaker ASR with Noisy/Overlapped Enrollment"** submitted to **ICASSP 2026**.
+This is the official repository for the paper **"Attentive Statistics Pooling and Margin-Based Contrastive Learning for Target-Speaker ASR with Overlapped Enrollment"** submitted to **ICASSP 2026**.
 
 ## 📋 Abstract
 
