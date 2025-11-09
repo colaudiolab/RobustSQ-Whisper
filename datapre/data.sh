@@ -22,7 +22,7 @@ EOF
 
 # Path to the directory containing WHAM! noise
 # (will download from the official site if not specified)
-# wham_noise=/home/backup_nfs2/data-ASR/librimix/wham_noise
+# wham_noise=/path/to/your/wham_noise
 wham_noise=  # Set to empty to force download
 
 stage=1
@@ -114,7 +114,7 @@ if [ ${stage} -le 2 ] && [ ${stop_stage} -ge 2 ]; then
     mkdir -p data/train_100
     mkdir -p data/train
 
-    metadata_dir="/home/ysc/link/LibriMix1/metadata/Libri2Mix/wav${sample_rate}/${min_or_max}"
+    metadata_dir="/path/to/your/LibriMix_metadata/Libri2Mix/wav${sample_rate}/${min_or_max}"
 
     for dset in dev test train_100 train; do
         if [ "${dset}" = "train_100" ]; then
@@ -139,22 +139,22 @@ if [ ${stage} -le 2 ] && [ ${stop_stage} -ge 2 ]; then
         # 修正路径：将CSV中的错误绝对路径替换为正确的相对路径
         grep -v mixture_ID  <(cat ${metadata_dir}/mixture_${mix_f}_mix_both.csv) | \
             sort -u | awk -F',' '{
-                gsub("/home/ysc/link/LibriMix1/metadata/", "data/", $2); 
+                gsub("/path/to/your/LibriMix_metadata/", "data/", $2); 
                 print $1, $2
             }' > data/${dset}/wav.scp
         grep -v mixture_ID  <(cat ${metadata_dir}/mixture_${mix_f}_mix_both.csv) | \
             sort -u | awk -F',' '{
-                gsub("/home/ysc/link/LibriMix1/metadata/", "data/", $3); 
+                gsub("/path/to/your/LibriMix_metadata/", "data/", $3); 
                 print $1, $3
             }' > data/${dset}/spk1.scp
         grep -v mixture_ID  <(cat ${metadata_dir}/mixture_${mix_f}_mix_both.csv) | \
             sort -u | awk -F',' '{
-                gsub("/home/ysc/link/LibriMix1/metadata/", "data/", $4); 
+                gsub("/path/to/your/LibriMix_metadata/", "data/", $4); 
                 print $1, $4
             }' > data/${dset}/spk2.scp
         grep -v mixture_ID  <(cat ${metadata_dir}/mixture_${mix_f}_mix_both.csv) | \
             sort -u | awk -F',' '{
-                gsub("/home/ysc/link/LibriMix1/metadata/", "data/", $5); 
+                gsub("/path/to/your/LibriMix_metadata/", "data/", $5); 
                 print $1, $5
             }' > data/${dset}/noise1.scp
     done
@@ -259,7 +259,7 @@ fi
 if [ ${stage} -le 102 ] && [ ${stop_stage} -ge 102 ]; then
     log "stage 102: create enrollment scp files"
     # use speech from LibriSpeech as enrollment
-    librispeech="/home/ysc/link/espnet/egs2/librimix/tgt_asr1/data/LibriSpeech"
+    librispeech="/path/to/your/LibriSpeech"
     # create enrollment json file for dev and test set
     python local/create_enrollment_json.py \
         --audio_path ${librispeech}/dev-clean \
@@ -278,7 +278,7 @@ if [ ${stage} -le 102 ] && [ ${stop_stage} -ge 102 ]; then
         --enroll_json data/train_sglspk/spk2enroll.json
 
     # download SpeakerBeam repo: `git clone git@github.com:BUTSpeechFIT/speakerbeam.git`
-    speakerbeam_dir="/home/ysc/link/espnet/egs2/librimix/tgt_asr1/data"
+    speakerbeam_dir="/path/to/your/speakerbeam_data"
     # create enrollment scp file for dev and test set
     python local/create_enrollment_scp.py \
         --data_dir data/dev_sglspk \
@@ -303,7 +303,7 @@ if [ ${stage} -le 103 ] && [ ${stop_stage} -ge 103 ]; then
     log "stage 103: extract speaker embeddings"
     # download pretrained resnet34 model
     # https://wespeaker-1256283475.cos.ap-shanghai.myqcloud.com/models/voxceleb/voxceleb_resnet34_LM.onnx
-    model=/home/ysc/link/espnet/egs2/librimix/tgt_asr1/pretrain_model/voxceleb_resnet34_LM.onnx
+    model=/path/to/your/pretrain_model/voxceleb_resnet34_LM.onnx
 
     CUDA_VISIBLE_DEVICES=7 python local/extract_reset_embedding_onnx.py \
         --data_dir data/dev_sglspk \

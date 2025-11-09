@@ -48,18 +48,18 @@ def main():
         text1 = textline1.strip().split(" ", 1)[1]
         text2 = textline2.strip().split(" ", 1)[1]
 
-        # 从 mixid 中提取真实的 speaker ID
+        # �?mixid 中提取真实的 speaker ID
         # 例如: 103-1240-0003_1235-135887-0017 -> spk1: 103-1240-0003, spk2: 1235-135887
         mixid_parts = mixid.split("_")
         spk1_id = mixid_parts[0]  # 第一个说话人ID
         spk2_id = mixid_parts[1]  # 第二个说话人ID
 
-        # 修改utterance ID格式，让speaker ID作为前缀以满足排序要求
+        # 修改utterance ID格式，让speaker ID作为前缀以满足排序要�?
         utt1_id = f"{spk1_id}_{mixid}_spk1"
         utt2_id = f"{spk2_id}_{mixid}_spk2"
 
-        # 修正路径：将错误的绝对路径替换为正确的相对路径
-        corrected_wavpath = wavpath.replace("/home/ysc/link/LibriMix1/metadata/", "data/")
+        # 修正路径：将错误的绝对路径替换为正确的相对路�?
+        corrected_wavpath = wavpath.replace("/path/to/your/LibriMix_metadata/", "data/")
         
         # write wav.scp with new utterance IDs and corrected paths
         fout_wavscp.write(f"{utt1_id} {corrected_wavpath}\n")
